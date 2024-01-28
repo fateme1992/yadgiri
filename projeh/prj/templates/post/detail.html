@@ -5,11 +5,39 @@
     <div class="row mt-3 d-flex justify-content-center">
         <div class="col">
             <h4 class="text-center">{{post.title}}</h4>
-            <h6 class="text-primary mt-5 mx-3"> author :{{post.author}} at <span></h6>
-                <p>{{post.body}}</p>
+             <h6 class="text-primary mt-5 mx-3"> author :{{post.author}} at 
+                <span>
+
+                </h6>
+                <p>
+                    {{post.body}}
+
+                </p>
 
         </div>
         <p>
+            <div>
+             {% with Comments.count as total_comments %}
+             <h3>number of Comments: {{total_comments}}</h3>
+             {% endwith %}
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                       {{ field.errors }}
+                       {{ field.label_tag }} 
+                       {{ field }}
+                       <br>
+                    {% endfor %}
+                    <input class="btn btn-primary"   type="submit", value="set comment">
+               </form>
+            </div>
+            <div class="col-6">
+                {% for ct in Comments%}
+                 {{ct.name}} is written : {{ct.body}}
+                 <hr>
+                 <br>
+                {%endfor%}
+            </div>
             <a href="#">
                 share
             </a>

@@ -3,6 +3,9 @@ from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils.translation import gettext as _
+   
+
 
 
 
@@ -26,16 +29,32 @@ class post(models.Model):
     objects=models.Manager()
     published=PublishedManager()
 
-def get_absolute_url(self):
-    return reverse("dgo:post_detail", args=[self.publish.year,self.publish.month,self.publish.day,self.slug])
+    def get_absolute_url(self):
+        return reverse("prj:post_detail", args=[self.publish.year,self.publish.month,self.publish.day,self.slug])
+    #def get_absolute_url(self):
+        #return reverse("prj:profile_detail", args=[str(self.id)])
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering=('-publish',)
 
 
-def __str__(self):
-    return self.title
-
-class Meta:
-    ordering=('-publish',)
-
-
-
-
+class comment(models.Model):
+    Post=models.ForeignKey(post,on_delete=models.CASCADE,related_name="comments")
+    name=models.CharField("نام",max_length=50)
+    email=models.EmailField(max_length=254,null=True,blank=True)
+    body=models.TextField()
+    created=models.DateTimeField(auto_now=False,auto_now_add=False)
+    updated=models.DateField(auto_now=True)
+    active=models.BooleanField(default=True)
+    
+    
+    class  Meta:
+        ordering=('created',)
+    
+     
+    def __str__(self):
+        return f'comment by {self.name} on {self.Post}'
+ 
