@@ -17,10 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from . import views
+from django.contrib.sitemaps.views import sitemap
+from prj.sitemaps import PostSitemap
+
+sitemaps={
+    'posts':PostSitemap
+    }
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.hi),
     path('prj/',include('prj.urls')),
+    path('sitemap.xml',sitemap,{'sitemaps':sitemaps},name='django.contrib.sitemaps.views.sitemap'),
 ]
- 
+  
