@@ -1,17 +1,54 @@
 {% extends "base.html" %}
+{% load prj_tags %}
+
 {% block content %}
 
-<h1>  list </h1>
-       <div class="post">
-       {% for post in prj %}
-           <div class="post">
-             <h2><a href="{% url 'post:detail' slug=Post.slug %}">{{ post.title }}</a> </h2>
-             <p>{{ post.snippet }}</p>
-             <p>{{ post.date }}</p>
-             <p class="author">added by {{ article.author.username }}</p>
-           </div>
-      {% endfor %}
-       </div>
+<h3> we have {% total_posts %} published post</h3>
+
+<h3> latest post</h3>
+{% show_latest_posts %}
+
+  
+<div class="container">
+  <div class="row mt-3 d-flex justify-content-center ">
+    {% if tag %}
+    <h3 class="text-center mb-4">posts with tag {{tag}} </h3>
+    {% else %}
+    <h3 class="text-center mb-4">list of posts </h3>
+    {% endif%}
+
+    {% for Post in posts %}
+    <div class="col-lg-3 col-md-4 colo-sm-6 col m-2">
+      <div class="card" style="width: 18rem;">
+        <div class="card-today">
+          <h5 class="card-title">{{Post.title}}</h5>
+          <p class="card-text">author : {{Post.author}}</p>
+          <h5 class="card-text">{{Post.body}}</h5>
+          <a href="{{Post.get_absolute_url}}" class="btn btn-primary">see more</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+    
+            {% if posts.has_next %}
+                <a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+            {% endif %}
+    
+        </li>
+      </ul>
+    </nav>
+    
+    
+      
+  </div>    
+</div>
+
+<P>
+  <a href="{%url 'prj:post_feed' %}"> subcribe in RSS </a>
+</p>
 
 
 {% endblock content%}

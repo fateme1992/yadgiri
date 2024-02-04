@@ -4,7 +4,9 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.translation import gettext as _
-   
+from taggit.managers import TaggableManager
+
+
 
 
 
@@ -28,6 +30,9 @@ class post(models.Model):
     status=models.CharField(max_length=10,choices=STATUS,default='draft')
     objects=models.Manager()
     published=PublishedManager()
+    tags=TaggableManager()
+    
+    
 
     def get_absolute_url(self):
         return reverse("prj:post_detail", args=[self.publish.year,self.publish.month,self.publish.day,self.slug])
